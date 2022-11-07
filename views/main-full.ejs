@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reflective Learning Chatbot Leaderboard</title>
+    <link href="static/style.css" rel="stylesheet" type="text/css">
+    <script>
+        var top10 = <%-JSON.stringify(top) %>;
+        var lastUpdate = <%-JSON.stringify(lastUpdated)%>;
+        var allScores = <%-JSON.stringify(allScores)%>;
+    </script>
+    <script src="static/mainscript.js"></script>
+
+</head>
+<body onload="updateTable();">
+<div id="main-container">
+<div id="top-container">
+<h1> Team Leaderboard </h1>
+<p id="viewDescription" class="text">On the left side of the screen, you will see the 10 teams with the highest scores</p>
+<p id="howToGetPoints" class="text">How are scores calculated? The more goal-setting interactions (morning) and reflection interactions (evening) that a team has completed with the chatbot, the higher the score. Additionally, higher scores are given to teams that begin their goal-setting and reflection soon after they are prompted by the chatbot to do so.</p>
+<p id="lastUpdated" class="text"></p>
+</div>
+<div id="bottom-container">
+<div id="left-container">
+<table>
+    <tr>
+        <th class="tableheader"> Rank </th>
+        <th class="tableheader"> Team Name(s) </th>
+        <th class="tableheader"> Score </th>
+    </tr>
+    <tr>
+        <td> 1 </td>
+        <td id="team-1">  </td>
+        <td id="team-1-score"> </td>
+    </tr>
+    <tr>
+        <td> 2 </td>
+        <td id="team-2">  </td>
+        <td id="team-2-score"> </td>
+    </tr>
+    <tr>
+        <td> 3 </td>
+        <td id="team-3">  </td>
+        <td id="team-3-score"> </td>
+    </tr>
+    <tr>
+        <td> 4 </td>
+        <td id="team-4">  </td>
+        <td id="team-4-score"> </td>
+    </tr>
+    <tr>
+        <td> 5 </td>
+        <td id="team-5">  </td>
+        <td id="team-5-score"> </td>
+    </tr>
+</table>
+</div>
+<div id="right-container">
+<p id="search-instructions" class="text">Enter the name of your team and click "Go!" to find out the score and rank of your team.</p>
+<input id="team-search" type="text" default="Team Name"></input>
+<button id="search-btn" onclick="getTeamInfo();"> Go! </button>
+<p id='team-not-found' hidden=true> That team doesn't exist! Make sure you enter the name with correct capitalization.</p>
+<table id="search-team" hidden=true>
+    <tr>
+        <th class="tableheader"> Rank </th>
+        <th class="tableheader"> Team Name(s) </th>
+        <th class="tableheader"> Score </th>
+    </tr>
+    <tr>
+        <td id="search-team-rank">  </td>
+        <td id="search-team-name">  </td>
+        <td id="search-team-score"> </td>
+    </tr>
+</table>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{
+  "experimentId" : "RL-Orgs-Prepilot-3",
+  "mandatoryParameters" : {
+    "language" : "string",
+    "timezone" : "string",
+    "PID" : "string"
+  },
+  "customParameters" : {
+    "onboardingComplete" : "boolean",
+    "postTestComplete" : "boolean",
+    "remindWorkIntention" : "boolean",
+    "workIntention" : "string",
+    "relIntention" : "string",
+    "remindRelIntention" : "boolean",
+    "inRelReflection" : "boolean",
+    "taskGoals" : "strArr",
+    "relGoals" : "strArr",
+    "taskGoalsSetToday" : "boolean",
+    "relGoalsSetToday" : "boolean",
+    "lastReportedTaskProgress" : "number",
+    "taskProgressReportedOnce" : "boolean",
+    "lastReportedRelProgress" : "number",
+    "relProgressReportedOnce" : "boolean",
+    "goalsMoreRelevant" : "boolean",
+    "reflectionStartedToday" : "boolean",
+    "goalsEquallyRelevant" : "boolean",
+    "dontAskInfoAgain" : "boolean",
+    "dontAskExampleAgain" : "boolean",
+    "relGoalsSetBefore" : "boolean",
+    "firstRelGoalDay" : "boolean",
+    "firstWorkGoalDay" : "boolean",
+    "workGoalsSetBefore" : "boolean",
+    "warningGiven" : "boolean",
+    "morningTime" : "string",
+    "eveningTime" : "string",
+    "testStrArr" : "strArr",
+    "testBool" : "boolean",
+    "testNum" : "number",
+    "testNumArr" : "numArr"
+  }
+}
