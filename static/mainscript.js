@@ -1,4 +1,4 @@
-var numTop = 5
+var numTop = 10
 function updateTable(){
     for(var i = 0; i < numTop; i++){
         let curRank = i+1;
