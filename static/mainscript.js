@@ -8,9 +8,8 @@ function updateTable(){
     for(var i = 0; i < Math.min(numTop,top10.length); i++){
         let curRank = i+1;
         let rankTeams = top10[i]
-        console.log(rankTeams[0]);
         document.getElementById("team-" + curRank).innerText = rankTeams.map(team => team.teamName).join(', ')
-        document.getElementById("team-" + curRank + "-score").innerText = rankTeams[0].score
+        document.getElementById("team-" + curRank + "-score").innerText = ""+rankTeams[0].score
     }
     document.getElementById("lastUpdated").innerText = "Last Updated: " + lastUpdate.toString()
 }

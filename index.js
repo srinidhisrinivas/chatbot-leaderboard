@@ -24,8 +24,8 @@ console.log("Finish connect to db")
 let defaultTeamInfoObject = {
     numCompletedGoalSetting: 0,
     numCompletedReflection: 0,
-    totalReflectionCharLength: 0,
-    totalNumGoalsSet: 0
+    numCompletedQuestionnaires: 0,
+    numTeamMembers: 0
 }
 
 // Object with team names mapping to objects with ranks and scores
@@ -49,7 +49,15 @@ app.get('/', function (req, res){
 // Function to compute a score for a given team based on
 // certain parameters that I haven't yet decided on
 let computeScore = (teamInfoObject) => {
-    return teamInfoObject.numCompletedGoalSetting + teamInfoObject.numCompletedReflection;
+    if(teamInfoObject.numTeamMembers === 0){
+        return 0
+    } else {
+        return Math.round((teamInfoObject.numCompletedGoalSetting
+            + teamInfoObject.numCompletedReflection
+            + 3 * teamInfoObject.numCompletedQuestionnaires)
+            * 10 / teamInfoObject.numTeamMembers);
+    }
+
 }
 
 let extractContinuousInteractions = (allAnswers) => {
@@ -59,7 +67,10 @@ let extractContinuousInteractions = (allAnswers) => {
         'Morning-Goals-All': 'goal',
         'Pre-Reflection': 'reflection',
         'Int-Reflection': 'reflection',
-        'Post-Test': 'post'
+        'Post-Test': 'questionnaire',
+        'Pre-Test': 'questionnaire',
+        'Pre-Test-2': 'questionnaire',
+        'Follow-Up': 'questionnaire'
     }
 
     // Possible continuous interactions: setup, onboarding, goal-setting, reflection, post-test
@@ -124,17 +135,22 @@ let updateAllScores = async () => {
                             // console.log(continuousInteractions)
                             let numReflectionComplete = 0
                             let numGoalSettingComplete = 0
+                            let numQuestionnairesComplete = 0
                             continuousInteractions.forEach(interaction => {
                                 if(interaction["type"] === 'goal'){
                                     numGoalSettingComplete += (interaction['end']['answer'][0] !== "[No Response]")
                                 } else if(interaction["type"] === 'reflection'){
                                     numReflectionComplete += (interaction['end']['answer'][0] !== "[No Response]")
+                                } else if(interaction["type"] === 'onboarding' || interaction["type"] === 'questionnaire'){
+                                    numQuestionnairesComplete += (interaction['end']['answer'][0] !== "[No Response]")
                                 }
                             })
 
                             // Update team information
                             tempTeamInfo[teamName]["numCompletedGoalSetting"] += numGoalSettingComplete
                             tempTeamInfo[teamName]["numCompletedReflection"] += numReflectionComplete
+                            tempTeamInfo[teamName]["numCompletedQuestionnaires"] += numQuestionnairesComplete
+                            tempTeamInfo[teamName]["numTeamMembers"] += 1
                             // console.log(uniqueId + ", " + teamName + ", " + numGoalSettingComplete);
                             // console.log(tempTeamInfo[teamName])
 

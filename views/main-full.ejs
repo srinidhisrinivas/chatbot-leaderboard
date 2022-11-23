@@ -13,92 +13,94 @@
 
 </head>
 <body onload="updateTable();">
-<div id="main-container">
-<div id="top-container">
-<h1> Team Leaderboard </h1>
-<p id="viewDescription" class="text">On the left side of the screen, you will see the 10 teams with the highest scores</p>
-<p id="howToGetPoints" class="text">How are scores calculated? The more goal-setting interactions (morning) and reflection interactions (evening) that a team has completed with the chatbot, the higher the score. Additionally, higher scores are given to teams that begin their goal-setting and reflection soon after they are prompted by the chatbot to do so.</p>
-<p id="lastUpdated" class="text"></p>
-</div>
-<div id="bottom-container">
-<div id="left-container">
-<table>
-    <tr>
-        <th class="tableheader"> Rank </th>
-        <th class="tableheader"> Team Name(s) </th>
-        <th class="tableheader"> Score </th>
-    </tr>
-    <tr>
-        <td> 1 </td>
-        <td id="team-1">  </td>
-        <td id="team-1-score"> </td>
-    </tr>
-    <tr>
-        <td> 2 </td>
-        <td id="team-2">  </td>
-        <td id="team-2-score"> </td>
-    </tr>
-    <tr>
-        <td> 3 </td>
-        <td id="team-3">  </td>
-        <td id="team-3-score"> </td>
-    </tr>
-    <tr>
-        <td> 4 </td>
-        <td id="team-4">  </td>
-        <td id="team-4-score"> </td>
-    </tr>
-    <tr>
-        <td> 5 </td>
-        <td id="team-5">  </td>
-        <td id="team-5-score"> </td>
-    </tr>
-    <tr>
-        <td> 6 </td>
-        <td id="team-6">  </td>
-        <td id="team-6-score"> </td>
-    </tr>
-    <tr>
-        <td> 7 </td>
-        <td id="team-7">  </td>
-        <td id="team-7-score"> </td>
-    </tr>
-    <tr>
-        <td> 8 </td>
-        <td id="team-8">  </td>
-        <td id="team-8-score"> </td>
-    </tr>
-    <tr>
-        <td> 9 </td>
-        <td id="team-9">  </td>
-        <td id="team-9-score"> </td>
-    </tr>
-    <tr>
-        <td> 10 </td>
-        <td id="team-10">  </td>
-        <td id="team-10-score"> </td>
-    </tr>
-</table>
-</div>
-<div id="right-container">
-<p id="search-instructions" class="text">Enter the name of your team and click "Go!" to find out the score and rank of your team.</p>
-<input id="team-search" type="text" default="Team Name"></input>
-<button id="search-btn" onclick="getTeamInfo();"> Go! </button>
-<p id='team-not-found' hidden=true> That team doesn't exist! Make sure you enter the name with correct capitalization.</p>
-<table id="search-team" hidden=true>
-    <tr>
-        <th class="tableheader"> Rank </th>
-        <th class="tableheader"> Team Name(s) </th>
-        <th class="tableheader"> Score </th>
-    </tr>
-    <tr>
-        <td id="search-team-rank">  </td>
-        <td id="search-team-name">  </td>
-        <td id="search-team-score"> </td>
-    </tr>
-</table>
-</div>
-</div>
-</div>
+    <div id="main-container">
+        <h1> Team Leaderboard </h1>
+        <div id="top-container">
+            <p id="viewDescription" class="text">On the left side of the screen, you will see the 10 teams with the highest scores. On the right side, you can search for your own team's score, to see how close you are to getting within the top 10!</p>
+            <p id="howToGetPoints" class="text">Scores are calculated as the average number of goal-setting interactions (mornings), reflection interactions (evenings), and questionnaires (weekly) that members of a team have successfully completed.</p>
+            <p id="howToGetPoints" class="text">(If the tables are empty, try refreshing the page.)</p>
+            <p id="lastUpdated" class="text"></p>
+        </div>
+        <div id="bottom-container">
+            <div id="left-container">
+                <table>
+                    <tr>
+                        <th class="tableheader"> Rank </th>
+                        <th class="tableheader"> Team Name(s) </th>
+                        <th class="tableheader"> Score </th>
+                    </tr>
+                    <tr>
+                        <td> 1 </td>
+                        <td id="team-1">  </td>
+                        <td id="team-1-score"> </td>
+                    </tr>
+                    <tr>
+                        <td> 2 </td>
+                        <td id="team-2">  </td>
+                        <td id="team-2-score"> </td>
+                    </tr>
+                    <tr>
+                        <td> 3 </td>
+                        <td id="team-3">  </td>
+                        <td id="team-3-score"> </td>
+                    </tr>
+                    <tr>
+                        <td> 4 </td>
+                        <td id="team-4">  </td>
+                        <td id="team-4-score"> </td>
+                    </tr>
+                    <tr>
+                        <td> 5 </td>
+                        <td id="team-5">  </td>
+                        <td id="team-5-score"> </td>
+                    </tr>
+                    <tr>
+                        <td> 6 </td>
+                        <td id="team-6">  </td>
+                        <td id="team-6-score"> </td>
+                    </tr>
+                    <tr>
+                        <td> 7 </td>
+                        <td id="team-7">  </td>
+                        <td id="team-7-score"> </td>
+                    </tr>
+                    <tr>
+                        <td> 8 </td>
+                        <td id="team-8">  </td>
+                        <td id="team-8-score"> </td>
+                    </tr>
+                    <tr>
+                        <td> 9 </td>
+                        <td id="team-9">  </td>
+                        <td id="team-9-score"> </td>
+                    </tr>
+                    <tr>
+                        <td> 10 </td>
+                        <td id="team-10">  </td>
+                        <td id="team-10-score"> </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="right-container">
+                <p id="search-instructions" class="text">Enter the name of your team and click "Go!" to find out the score and rank of your team.</p>
+                <input id="team-search" type="text" default="Team Name"></input>
+                <button id="search-btn" onclick="getTeamInfo();"> Go! </button>
+                <p id='team-not-found' hidden=true> That team doesn't exist! Make sure you enter the name with correct capitalization.</p>
+                <table id="search-team" hidden=true>
+                    <tr>
+                        <th class="tableheader"> Rank </th>
+                        <th class="tableheader"> Team Name(s) </th>
+                        <th class="tableheader"> Score </th>
+                    </tr>
+                    <tr>
+                        <td id="search-team-rank">  </td>
+                        <td id="search-team-name">  </td>
+                        <td id="search-team-score"> </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>
