@@ -25,8 +25,11 @@ let defaultTeamInfoObject = {
     numCompletedGoalSetting: 0,
     numCompletedReflection: 0,
     numCompletedQuestionnaires: 0,
-    numTeamMembers: 0
+    numTeamMembers: 0,
+    company: "None"
 }
+
+const answerExpiryTime = process.env.EXPIRY_TIME_DAYS || 1000;
 
 // Object with team names mapping to objects with ranks and scores
 let allTeamScores = {}
@@ -73,28 +76,41 @@ let extractContinuousInteractions = (allAnswers) => {
         'Follow-Up': 'questionnaire'
     }
 
+    let checkInteractionValidity = (interaction, expiryDays) => {
+        if(!("end" in interaction)){
+            return false;
+        }
+        let interactionDate =  new Date(interaction['end']['answerTimeStamp'])
+        let currentDate = new Date();
+
+        let dateDiffDays = (currentDate - interactionDate) / (1000 * 3600 * 24);
+        return dateDiffDays <= answerExpiryTime;
+
+    }
+
     // Possible continuous interactions: setup, onboarding, goal-setting, reflection, post-test
     let interactions = []
+
+    // flag to turn on and off checking expiry of answers
+    let control = false;
     let current_state = 'start'  // setup, onboarding, goal, reflection, post
     let current_interaction = {}
     allAnswers.forEach(answer => {
         let category = answer['qId'].split('.')[0]
-        // console.log(category)
         let new_state = next_states[category]
-        // console.log(new_state)
-        // console.log(current_state)
+
         if (new_state !== current_state) {
-            // console.log("new interaction\n")
             if (!("end" in current_interaction) && ("start" in current_interaction)) {
                 current_interaction['end'] = current_interaction['start']
             }
-            interactions.push(current_interaction)
+            if(control || checkInteractionValidity(current_interaction, answerExpiryTime)){
+                interactions.push(current_interaction)
+            }
             current_interaction = {
                 'type': new_state,
                 'start': answer
             }
         } else {
-            // console.log("old interaction\n")
             if (["[No Response]", "[Repeat Question]"].includes(current_interaction['start']['answer'][0])) {
                 current_interaction['start'] = answer
             }
@@ -107,9 +123,11 @@ let extractContinuousInteractions = (allAnswers) => {
     if (!("end" in current_interaction) && ("start" in current_interaction)){
         current_interaction['end'] = current_interaction['start']
     }
-    interactions.push(current_interaction)
-    interactions.shift()
 
+    if(control || checkInteractionValidity(current_interaction, answerExpiryTime)){
+        interactions.push(current_interaction)
+    }
+    if(control) interactions.shift()
     return interactions
 }
 
@@ -123,7 +141,12 @@ let updateAllScores = async () => {
             allParts.forEach(part => {
                 let uniqueId = part.uniqueId;
                 let teamName = part.parameters.PID;
-                teamName = teamName.split("-")[0];
+
+                let companyName = part.parameters.company;
+
+                let teamNameSplit = teamName.split("-");
+                teamName = teamNameSplit[0]
+                let isLeader = teamNameSplit.length > 1;
                 if(!(teamName in tempTeamInfo)){
                     tempTeamInfo[teamName] = JSON.parse(JSON.stringify(defaultTeamInfoObject))
                 }
@@ -132,6 +155,8 @@ let updateAllScores = async () => {
                         .then(partAnswers => {
                             // Get participant answer info and count number of completed reflections + goal settings
                             let continuousInteractions = extractContinuousInteractions(partAnswers);
+
+                            // TODO: Filter interactions to be only from last week
                             // console.log(continuousInteractions)
                             let numReflectionComplete = 0
                             let numGoalSettingComplete = 0
@@ -151,6 +176,10 @@ let updateAllScores = async () => {
                             tempTeamInfo[teamName]["numCompletedReflection"] += numReflectionComplete
                             tempTeamInfo[teamName]["numCompletedQuestionnaires"] += numQuestionnairesComplete
                             tempTeamInfo[teamName]["numTeamMembers"] += 1
+                            if(isLeader){
+                                tempTeamInfo[teamName]["company"] = companyName;
+                            }
+
                             // console.log(uniqueId + ", " + teamName + ", " + numGoalSettingComplete);
                             // console.log(tempTeamInfo[teamName])
 
@@ -166,6 +195,7 @@ let updateAllScores = async () => {
                 if(!(teamName in allTeamScores)){
                     allTeamScores[teamName] = {
                         teamName: teamName,
+                        companyName: newObj["company"],
                         score: 0,
                         rank: 0
                     }
@@ -177,6 +207,7 @@ let updateAllScores = async () => {
             for(const [teamName, obj] of Object.entries(allTeamScores)){
                 teamScoreList.push({
                     "teamName": teamName,
+                    "companyName": obj.companyName,
                     "score" : obj.score
                 })
             }
